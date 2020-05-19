@@ -1,12 +1,12 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: TokenManager
     network: mainnet
     source:
-      address: "0x8efa3a615317b832ec3517c0aa22afc7771185eb" # TokenManager proxy
+      address: "0x8efa3a615317b832ec3517c0aa22afc7771185eb"
       startBlock: 9593674
       abi: TokenManager
     mapping:
@@ -17,7 +17,7 @@ dataSources:
         - Token
       abis:
         - name: TokenManager
-          file: ./abis/TokenManager.json
+          file: TokenManager/abis/TokenManager.json
       eventHandlers:
         - event: NewVesting(indexed address,uint256,uint256)
           handler: handleNewVesting
@@ -27,7 +27,7 @@ dataSources:
           handler: handleScriptResult
         - event: RecoverToVault(indexed address,indexed address,uint256)
           handler: handleRecoverToVault
-      file: ./src/mapping.ts
+      file: TokenManager/TokenManager.wasm
   - kind: ethereum/contract
     name: MiniMeToken
     network: mainnet
@@ -45,7 +45,7 @@ dataSources:
         - Approval
       abis:
         - name: MiniMeToken
-          file: ./abis/MiniMeToken.json
+          file: MiniMeToken/abis/MiniMeToken.json
       eventHandlers:
         - event: ClaimedTokens(indexed address,indexed address,uint256)
           handler: handleClaimedTokens
@@ -55,4 +55,4 @@ dataSources:
           handler: handleNewCloneToken
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
-      file: ./src/mapping.ts
+      file: TokenManager/TokenManager.wasm

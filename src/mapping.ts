@@ -1,83 +1,59 @@
-import { BigInt } from "@graphprotocol/graph-ts"
-import {
-  Contract,
-  NewVesting,
-  RevokeVesting,
-  ScriptResult,
-  RecoverToVault
-} from "../generated/Contract/Contract"
-import { ExampleEntity } from "../generated/schema"
+// /// <reference path="../node_modules/assemblyscript/index.d.ts" />
+// /// <reference path="../node_modules/@graphprotocol/graph-ts/chain/ethereum.ts" />
 
-export function handleNewVesting(event: NewVesting): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+// TheGraph APIs.
+import { ethereum, BigInt } from "@graphprotocol/graph-ts"
+// Entities.
+import { Token, TokenHolder, Approval } from "../generated/schema"
+// Events.
+import { NewVesting as NewVestingEvent } from "../generated/TokenManager/TokenManager"
+import { RevokeVesting as RevokeVestingEvent } from "../generated/TokenManager/TokenManager"
+import { ScriptResult as ScriptResultEvent } from "../generated/TokenManager/TokenManager"
+import { RecoverToVault as RecoverToVaultEvent } from "../generated/TokenManager/TokenManager"
+import { ClaimedTokens as ClaimedTokensEvent } from "../generated/MiniMeToken/MiniMeToken"
+import { Transfer as TransferEvent } from "../generated/MiniMeToken/MiniMeToken"
+import { NewCloneToken as NewCloneTokenEvent } from "../generated/MiniMeToken/MiniMeToken"
+import { Approval as ApprovalEvent } from "../generated/MiniMeToken/MiniMeToken"
+// Contracts.
+import { TokenManager as TokenManagerContract } from "../generated/TokenManager/TokenManager"
+import { MiniMeToken as MiniMeTokenContract } from "../generated/MiniMeToken/MiniMeToken"
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (entity == null) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
+function _getTokenHolder(holderAddress: string): TokenHolder {
+  let tokenHolderId = 'holderAddress-' + holderAddress
 
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+  let tokenHolder = TokenHolder.load(tokenHolderId)
+
+  if (!tokenHolder) {
+    tokenHolder = new TokenHolder(tokenHolderId)
+    tokenHolder.balance = new BigInt(0)
+
+    let approvals = new Array<string>()
+    tokenHolder.approvals = approvals
+
+    tokenHolder.save()
   }
 
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity.receiver = event.params.receiver
-  entity.vestingId = event.params.vestingId
-
-  // Entities can be written to the store with `.save()`
-  entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.hasInitialized(...)
-  // - contract.MAX_VESTINGS_PER_ADDRESS(...)
-  // - contract.spendableBalanceOf(...)
-  // - contract.assignVested(...)
-  // - contract.getEVMScriptExecutor(...)
-  // - contract.getRecoveryVault(...)
-  // - contract.getVesting(...)
-  // - contract.onTransfer(...)
-  // - contract.transferableBalance(...)
-  // - contract.allowRecoverability(...)
-  // - contract.appId(...)
-  // - contract.ISSUE_ROLE(...)
-  // - contract.getInitializationBlock(...)
-  // - contract.vestingsLengths(...)
-  // - contract.canPerform(...)
-  // - contract.getEVMScriptRegistry(...)
-  // - contract.ASSIGN_ROLE(...)
-  // - contract.BURN_ROLE(...)
-  // - contract.canForward(...)
-  // - contract.kernel(...)
-  // - contract.onApprove(...)
-  // - contract.isPetrified(...)
-  // - contract.MINT_ROLE(...)
-  // - contract.maxAccountTokens(...)
-  // - contract.REVOKE_VESTINGS_ROLE(...)
-  // - contract.token(...)
-  // - contract.isForwarder(...)
+  return tokenHolder!
 }
 
-export function handleRevokeVesting(event: RevokeVesting): void {}
+export function handleTransfer(event: TransferEvent): void {
+  let transferedAmount = event.params._amount
 
-export function handleScriptResult(event: ScriptResult): void {}
+  let sendingHolder = _getTokenHolder(event.params._from.toHexString())
+  let receivingHolder = _getTokenHolder(event.params._to.toHexString())
 
-export function handleRecoverToVault(event: RecoverToVault): void {}
+  sendingHolder.balance = sendingHolder.balance.minus(transferedAmount)
+  receivingHolder.balance = receivingHolder.balance.plus(transferedAmount)
+
+  sendingHolder.save()
+  receivingHolder.save()
+}
+
+// Unused handlers (for now).
+export function handleClaimedTokens(event: ClaimedTokensEvent): void {}
+export function handleNewCloneToken(event: NewCloneTokenEvent): void {}
+export function handleApproval(event: ApprovalEvent): void {}
+export function handleNewVesting(event: NewVestingEvent): void {}
+export function handleRevokeVesting(event: RevokeVestingEvent): void {}
+export function handleScriptResult(event: ScriptResultEvent): void {}
+export function handleRecoverToVault(event: RecoverToVaultEvent): void {}
