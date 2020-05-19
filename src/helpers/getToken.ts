@@ -12,6 +12,7 @@ export function getToken(tokenAddress: Address): Token {
     let tokenContract = MiniMeTokenContract.bind(tokenAddress)
 
     token.name = tokenContract.name()
+    token.address = tokenAddress
     token.symbol = tokenContract.symbol()
     token.totalSupply = tokenContract.totalSupply()
     token.transferable = tokenContract.transfersEnabled()
