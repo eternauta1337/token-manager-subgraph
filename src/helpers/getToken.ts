@@ -1,7 +1,7 @@
 
 import { Address } from "@graphprotocol/graph-ts"
 import { Token } from "../../generated/schema"
-import { MiniMeToken as MiniMeTokenContract } from "../generated/MiniMeToken/MiniMeToken"
+import { MiniMeToken as MiniMeTokenContract } from "../../generated/MiniMeToken/MiniMeToken"
 
 export default function getToken(tokenAddress: Address): Token {
   let token = Token.load(tokenAddress.toHexString())

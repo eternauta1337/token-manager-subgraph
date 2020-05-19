@@ -1,7 +1,13 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import { TokenHolder } from "../../generated/schema"
 
-export default function _getTokenHolder(holderAddress: string): TokenHolder {
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+
+export default function _getTokenHolder(holderAddress: string): TokenHolder | null {
+  if (holderAddress == ZERO_ADDRESS) {
+    return null
+  }
+
   let tokenHolderId = 'holderAddress-' + holderAddress
 
   let tokenHolder = TokenHolder.load(tokenHolderId)
@@ -16,5 +22,5 @@ export default function _getTokenHolder(holderAddress: string): TokenHolder {
     tokenHolder.save()
   }
 
-  return tokenHolder!
+  return tokenHolder
 }
