@@ -4,10 +4,10 @@
   "scripts": {
     "codegen": "rm -rf generated; graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ajsantander/token-manager-subgraph",
-    "create-local": "graph create --node http://localhost:8020/ ajsantander/token-manager-subgraph",
-    "remove-local": "graph remove --node http://localhost:8020/ ajsantander/token-manager-subgraph",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 ajsantander/token-manager-subgraph"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ajsantander/token-manager --access-token $GRAPHKEY",
+    "create-local": "graph create --node http://localhost:8020/ ajsantander/token-manager",
+    "remove-local": "graph remove --node http://localhost:8020/ ajsantander/token-manager",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 ajsantander/token-manager"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.18.0",

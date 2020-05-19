@@ -15,7 +15,11 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Token
+        - TokenHolder
+        - Approval
       abis:
+        - name: MiniMeToken
+          file: TokenManager/abis/MiniMeToken.json
         - name: TokenManager
           file: TokenManager/abis/TokenManager.json
       eventHandlers:
@@ -46,6 +50,8 @@ dataSources:
       abis:
         - name: MiniMeToken
           file: MiniMeToken/abis/MiniMeToken.json
+        - name: TokenManager
+          file: MiniMeToken/abis/TokenManager.json
       eventHandlers:
         - event: ClaimedTokens(indexed address,indexed address,uint256)
           handler: handleClaimedTokens

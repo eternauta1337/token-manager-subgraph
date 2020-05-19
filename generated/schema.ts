@@ -127,12 +127,12 @@ export class TokenHolder extends Entity {
     this.set("balance", Value.fromBigInt(value));
   }
 
-  get approvals(): Array<string | null> {
+  get approvals(): Array<string> {
     let value = this.get("approvals");
     return value.toStringArray();
   }
 
-  set approvals(value: Array<string | null>) {
+  set approvals(value: Array<string>) {
     this.set("approvals", Value.fromStringArray(value));
   }
 }
