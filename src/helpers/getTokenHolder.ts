@@ -1,19 +1,18 @@
-import { BigInt } from "@graphprotocol/graph-ts"
-import { TokenHolder } from "../../generated/schema"
+import { BigInt, Address } from '@graphprotocol/graph-ts'
+import { TokenHolder } from '../../generated/schema'
 
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
-
-export default function _getTokenHolder(holderAddress: string): TokenHolder | null {
-  if (holderAddress == ZERO_ADDRESS) {
+export function getTokenHolder(holderAddress: Address): TokenHolder | null {
+  if (holderAddress == new Address(0)) {
     return null
   }
 
-  let tokenHolderId = 'holderAddress-' + holderAddress
+  let tokenHolderId = 'holderAddress-' + holderAddress.toHexString()
 
   let tokenHolder = TokenHolder.load(tokenHolderId)
 
   if (!tokenHolder) {
     tokenHolder = new TokenHolder(tokenHolderId)
+    tokenHolder.address = holderAddress
     tokenHolder.balance = new BigInt(0)
 
     let approvals = new Array<string>()

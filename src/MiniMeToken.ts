@@ -1,10 +1,10 @@
-import { BigInt } from "@graphprotocol/graph-ts"
-import { ClaimedTokens as ClaimedTokensEvent } from "../generated/MiniMeToken/MiniMeToken"
-import { Transfer as TransferEvent } from "../generated/MiniMeToken/MiniMeToken"
-import { NewCloneToken as NewCloneTokenEvent } from "../generated/MiniMeToken/MiniMeToken"
-import { Approval as ApprovalEvent } from "../generated/MiniMeToken/MiniMeToken"
-import getToken from './helpers/getToken'
-import getTokenHolder from './helpers/getTokenHolder'
+import { BigInt } from '@graphprotocol/graph-ts'
+import { ClaimedTokens as ClaimedTokensEvent } from '../generated/MiniMeToken/MiniMeToken'
+import { Transfer as TransferEvent } from '../generated/MiniMeToken/MiniMeToken'
+import { NewCloneToken as NewCloneTokenEvent } from '../generated/MiniMeToken/MiniMeToken'
+import { Approval as ApprovalEvent } from '../generated/MiniMeToken/MiniMeToken'
+import { getToken } from './helpers/getToken'
+import { getTokenHolder } from './helpers/getTokenHolder'
 
 export function handleTransfer(event: TransferEvent): void {
   let tokenAddress = event.address
@@ -12,12 +12,12 @@ export function handleTransfer(event: TransferEvent): void {
 
   let transferedAmount = event.params._amount
 
-  let sendingHolder = getTokenHolder(event.params._from.toHexString())
+  let sendingHolder = getTokenHolder(event.params._from)
   if (sendingHolder) {
     sendingHolder.balance = sendingHolder.balance.minus(transferedAmount)
   }
 
-  let receivingHolder = getTokenHolder(event.params._to.toHexString())
+  let receivingHolder = getTokenHolder(event.params._to)
   let receivingHolderPrevBalance = receivingHolder.balance
   if (receivingHolder) {
     receivingHolder.balance = receivingHolder.balance.plus(transferedAmount)

@@ -1,5 +1,6 @@
 type Token @entity {
   id: ID!
+  address: Bytes!
   totalSupply: BigInt!
   transferable: Boolean!
   name: String!
@@ -9,6 +10,7 @@ type Token @entity {
 
 type TokenHolder @entity {
   id: ID!
+  address: Bytes!
   balance: BigInt!
   approvals: [Approval!]!
 }

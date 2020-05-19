@@ -61,4 +61,4 @@ dataSources:
           handler: handleNewCloneToken
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
-      file: TokenManager/TokenManager.wasm
+      file: MiniMeToken/MiniMeToken.wasm

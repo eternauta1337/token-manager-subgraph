@@ -31,7 +31,7 @@ dataSources:
           handler: handleScriptResult
         - event: RecoverToVault(indexed address,indexed address,uint256)
           handler: handleRecoverToVault
-      file: ./src/mapping.ts
+      file: ./src/TokenManager.ts
   - kind: ethereum/contract
     name: MiniMeToken
     network: mainnet
@@ -61,4 +61,4 @@ dataSources:
           handler: handleNewCloneToken
         - event: Approval(indexed address,indexed address,uint256)
           handler: handleApproval
-      file: ./src/mapping.ts
+      file: ./src/MiniMeToken.ts
