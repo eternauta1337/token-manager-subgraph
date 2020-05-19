@@ -1,0 +1,32 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xde3a93028f2283cc28756b3674bd657eafb992f4"
+      abi: Contract
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - NewVesting
+        - RevokeVesting
+        - ScriptResult
+        - RecoverToVault
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: NewVesting(indexed address,uint256,uint256)
+          handler: handleNewVesting
+        - event: RevokeVesting(indexed address,uint256,uint256)
+          handler: handleRevokeVesting
+        - event: ScriptResult(indexed address,bytes,bytes,bytes)
+          handler: handleScriptResult
+        - event: RecoverToVault(indexed address,indexed address,uint256)
+          handler: handleRecoverToVault
+      file: ./src/mapping.ts
