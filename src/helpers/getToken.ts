@@ -1,13 +1,13 @@
 
 import { Address } from '@graphprotocol/graph-ts'
-import { Token } from '../../generated/schema'
+import { Token as TokenEntity } from '../../generated/schema'
 import { MiniMeToken as MiniMeTokenContract } from '../../generated/MiniMeToken/MiniMeToken'
 
-export function getToken(tokenAddress: Address): Token {
-  let token = Token.load(tokenAddress.toHexString())
+export function getToken(tokenAddress: Address): TokenEntity {
+  let token = TokenEntity.load(tokenAddress.toHexString())
 
   if (!token) {
-    token = new Token(tokenAddress.toHexString())
+    token = new TokenEntity(tokenAddress.toHexString())
 
     let tokenContract = MiniMeTokenContract.bind(tokenAddress)
 

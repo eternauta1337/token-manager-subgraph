@@ -1,17 +1,17 @@
 import { BigInt, Address } from '@graphprotocol/graph-ts'
-import { TokenHolder } from '../../generated/schema'
+import { TokenHolder as TokenHolderEntity } from '../../generated/schema'
 
-export function getTokenHolder(holderAddress: Address): TokenHolder | null {
+export function getTokenHolder(holderAddress: Address): TokenHolderEntity | null {
   if (holderAddress == new Address(0)) {
     return null
   }
 
   let tokenHolderId = 'holderAddress-' + holderAddress.toHexString()
 
-  let tokenHolder = TokenHolder.load(tokenHolderId)
+  let tokenHolder = TokenHolderEntity.load(tokenHolderId)
 
   if (!tokenHolder) {
-    tokenHolder = new TokenHolder(tokenHolderId)
+    tokenHolder = new TokenHolderEntity(tokenHolderId)
     tokenHolder.address = holderAddress
     tokenHolder.balance = new BigInt(0)
 
