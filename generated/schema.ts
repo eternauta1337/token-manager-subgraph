@@ -185,21 +185,39 @@ export class Approval extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get grantee(): Bytes {
-    let value = this.get("grantee");
+  get owner(): Bytes {
+    let value = this.get("owner");
     return value.toBytes();
   }
 
-  set grantee(value: Bytes) {
-    this.set("grantee", Value.fromBytes(value));
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
   }
 
-  get allowance(): BigInt {
-    let value = this.get("allowance");
+  get spender(): Bytes {
+    let value = this.get("spender");
+    return value.toBytes();
+  }
+
+  set spender(value: Bytes) {
+    this.set("spender", Value.fromBytes(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
     return value.toBigInt();
   }
 
-  set allowance(value: BigInt) {
-    this.set("allowance", Value.fromBigInt(value));
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+
+  get txHash(): Bytes {
+    let value = this.get("txHash");
+    return value.toBytes();
+  }
+
+  set txHash(value: Bytes) {
+    this.set("txHash", Value.fromBytes(value));
   }
 }

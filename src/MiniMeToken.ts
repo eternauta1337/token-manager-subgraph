@@ -1,7 +1,8 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { BigInt, Address } from '@graphprotocol/graph-ts'
 import { ClaimedTokens as ClaimedTokensEvent } from '../generated/MiniMeToken/MiniMeToken'
 import { Transfer as TransferEvent } from '../generated/MiniMeToken/MiniMeToken'
 import { NewCloneToken as NewCloneTokenEvent } from '../generated/MiniMeToken/MiniMeToken'
+import { Approval } from '../generated/schema'
 import { Approval as ApprovalEvent } from '../generated/MiniMeToken/MiniMeToken'
 import { getToken } from './helpers/getToken'
 import { getTokenHolder } from './helpers/getTokenHolder'
@@ -36,6 +37,26 @@ export function handleTransfer(event: TransferEvent): void {
   receivingHolder.save()
 }
 
+export function handleApproval(event: ApprovalEvent): void {
+  let txHash = event.transaction.hash
+  let approvalId = 'txHash-' + txHash.toHexString()
+
+  let approval = new Approval(approvalId)
+
+  approval.txHash = txHash
+  approval.owner = event.params._owner
+  approval.spender = event.params._spender
+  approval.amount = event.params._amount
+
+  let tokenHolder = getTokenHolder(approval.owner as Address)
+
+  let approvals = tokenHolder.approvals
+  approvals.push(approval.id)
+  tokenHolder.approvals = approvals
+
+  tokenHolder.save()
+  approval.save()
+}
+
 export function handleClaimedTokens(event: ClaimedTokensEvent): void {}
 export function handleNewCloneToken(event: NewCloneTokenEvent): void {}
-export function handleApproval(event: ApprovalEvent): void {}

@@ -17,6 +17,8 @@ type TokenHolder @entity {
 
 type Approval @entity {
   id: ID!
-  grantee: Bytes!
-  allowance: BigInt!
+  owner: Bytes!
+  spender: Bytes!
+  amount: BigInt!
+  txHash: Bytes!
 }
