@@ -2,7 +2,7 @@ import { BigInt, Address } from '@graphprotocol/graph-ts'
 import { TokenHolder as TokenHolderEntity } from '../../generated/schema'
 
 export function getTokenHolder(holderAddress: Address): TokenHolderEntity | null {
-  if (holderAddress == new Address(0)) {
+  if (holderAddress.toHexString() == '0x0000000000000000000000000000000000000000') {
     return null
   }
 

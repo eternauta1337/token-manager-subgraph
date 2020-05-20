@@ -4,10 +4,10 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: TokenManager
-    network: mainnet
+    network: rinkeby
     source:
-      address: "0x8efa3a615317b832ec3517c0aa22afc7771185eb"
-      startBlock: 9593674
+      address: "0xef39ab8cb13cd7fa408a9fff8372a8aa3e1ee844"
+      startBlock: 5952243
       abi: TokenManager
     mapping:
       kind: ethereum/events
@@ -34,11 +34,11 @@ dataSources:
       file: TokenManager/TokenManager.wasm
   - kind: ethereum/contract
     name: MiniMeToken
-    network: mainnet
+    network: rinkeby
     source:
-      address: "0x5f5e9ed11344dadc3a08688e5f17e23f6a99bf81"
+      address: "0xADB40e7a8B55D9409E068098C10F146e549e60Da"
       abi: MiniMeToken
-      startBlock: 9593674
+      startBlock: 5952243
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

@@ -33,8 +33,13 @@ export function handleTransfer(event: TransferEvent): void {
     }
   }
 
-  sendingHolder.save()
-  receivingHolder.save()
+  if(sendingHolder) {
+    sendingHolder.save()
+  }
+
+  if (receivingHolder) {
+    receivingHolder.save()
+  }
 }
 
 export function handleApproval(event: ApprovalEvent): void {
